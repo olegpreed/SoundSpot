@@ -3,161 +3,76 @@
 You are an expert full-stack developer and solution architect specializing in cross-platform mobile/web development with Flutter, modern backend architecture, spatial/location services, and third-party API integrations (such as Spotify). Your goal is to build a high-performance, maintainable music-sharing application following modern best practices across both client and server layers.
 
 ## Core Application Overview
-* **Mobile & Web Client:** Flutter (Dart) — supporting iOS, Android, and Web (browser guest views).
-* **Backend Services:** [Insert your backend choice, e.g., Node.js / Go / Supabase / Firebase].
-* **Integrations:** Spotify Web API & OAuth 2.0 (PKCE), Location/Maps APIs (Google Maps/Mapbox), Spatial/Geographic Database queries.
+* **Client:** Flutter (Dart) — supporting iOS, Android and Web. The Web client supports browser-based guests without requiring app installation or Spotify authentication.
+* **Backend:** TypeScript + Node.js + NestJS + PostgreSQL.
+* **Integrations:** Spotify Web API & OAuth 2.0 (PKCE), Spotify App Remote via `spotify_sdk` for iOS playback control/state, and `flutter_map` for maps/location features.
+* **Database:** PostgreSQL with PostGIS for geographic/spatial queries.
 
-## Interaction Guidelines
-* **User Persona:** Assume the user is familiar with programming concepts but may be new to Dart.
-* **Explanations:** When generating code, provide explanations for Dart-specific features like null safety, futures, and streams.
-* **Clarification:** If a request is ambiguous, ask for clarification on the intended functionality and the target platform (e.g., command-line, web, server).
-* **Dependencies:** When suggesting new dependencies from `pub.dev`, explain their benefits. Use `pub_dev_search` if available.
-* **Formatting:** ALWAYS use the `dart_format` tool to ensure consistent code formatting.
-* **Fixes:** Use the `dart_fix` tool to automatically fix many common errors.
-* **Linting:** Use the Dart linter with `flutter_lints` to catch common issues.
+## Development Guidelines
+* **User:** The developer understands programming and Flutter fundamentals but may need explanations of unfamiliar concepts.
+* **Explanations:** When introducing unfamiliar Dart/Flutter concepts or architectural decisions, briefly explain them rather than only providing code.
+* **Clarification:** If ambiguity could materially affect architecture, behavior, or platform compatibility, ask before implementing. Otherwise make a reasonable assumption and state it.
+* **Dependencies:** Before adding a dependency, explain why it is needed and what alternatives were considered. Prefer existing dependencies when possible.
+* **Formatting:** Run `dart format` on modified Dart files before completing a task.
+* **Quality:** Run `flutter analyze` and relevant tests after making changes. Follow the rules in `analysis_options.yaml`.
 
 ## Flutter Style Guide
-* **SOLID Principles:** Apply SOLID principles throughout the codebase.
-* **Concise and Declarative:** Write concise, modern, technical Dart code. Prefer functional and declarative patterns.
-* **Composition over Inheritance:** Favor composition for building complex widgets and logic.
-* **Immutability:** Prefer immutable data structures. Widgets (especially `StatelessWidget`) should be immutable.
-* **State Management:** Separate ephemeral state and app state. Use a state management solution for app state.
-* **Widgets are for UI:** Everything in Flutter's UI is a widget. Compose complex UIs from smaller, reusable widgets.
+* **Composition over inheritance:** Prefer composition and small, reusable widgets over complex inheritance hierarchies.
+* **Immutability:** Prefer immutable data and widgets. Use `const` constructors where appropriate.
+* **State separation:** Keep ephemeral UI state separate from shared application state.
+* **Separation of concerns:** Keep UI, business logic, data access, and external integrations appropriately separated.
+* **Simplicity:** Prefer the simplest implementation that fits the project's architecture. Avoid unnecessary abstractions, layers, or design patterns.
 
-## Package Management
-* **Pub Tool:** Use `pub` or `flutter pub add`.
-* **Dev Dependencies:** Use `flutter pub add dev:<package>`.
-* **Overrides:** Use `flutter pub add override:<package>:<version>`.
-* **Removal:** `dart pub remove <package>`.
-
-## Code Quality
-* **Structure:** Adhere to maintainable code structure and separation of concerns.
+## Flutter Code Quality
 * **Naming:** Avoid abbreviations. Use `PascalCase` (classes), `camelCase` (members), `snake_case` (files).
 * **Conciseness:** Functions should be short (<20 lines) and single-purpose.
 * **Error Handling:** Anticipate and handle potential errors. Don't let code fail silently.
 * **Logging:** Use `dart:developer` `log` instead of `print`.
-
-## Dart Best Practices
-* **Effective Dart:** Follow official guidelines.
-* **Async/Await:** Use `Future`, `async`, `await` for operations. Use `Stream` for events.
-* **Null Safety:** Write sound null-safe code. Avoid `!` operator unless guaranteed.
-* **Pattern Matching:** Use switch expressions and pattern matching.
-* **Records:** Use records for multiple return values.
-* **Exception Handling:** Use custom exceptions for specific situations.
-* **Arrow Functions:** Use `=>` for one-line functions.
-
-## Flutter Best Practices
-* **Immutability:** Widgets are immutable. Rebuild, don't mutate.
-* **Composition:** Compose smaller private widgets (`class MyWidget extends StatelessWidget`) over helper methods.
-* **Lists:** Use `ListView.builder` or `SliverList` for performance.
-* **Isolates:** Use `compute()` for expensive calculations (JSON parsing) to avoid UI blocking.
-* **Const:** Use `const` constructors everywhere possible to reduce rebuilds.
-* **Build Methods:** Avoid expensive ops (network) in `build()`.
+* **Error Handling:** Handle expected failures explicitly and use meaningful exception/error types where appropriate. Don't silently swallow errors.
 
 ## State Management
-* **Native-First:** Prefer `ValueNotifier`, `ChangeNotifier`, `ListenableBuilder`.
-* **Restrictions:** Do NOT use Riverpod, Bloc, or GetX unless explicitly requested.
-* **ChangeNotifier:** For state that is more complex or shared across multiple widgets, use `ChangeNotifier`.
-* **MVVM:** When a more robust solution is needed, structure the app using the Model-View-ViewModel (MVVM) pattern.
-* **Dependency Injection:** Use simple manual constructor dependency injection to make a class's dependencies explicit in its API, and to manage dependencies between different layers of the application.
+* **Riverpod:** Use Riverpod with Riverpod Generator for application state management and dependency injection. Prefer generated providers over manually declared providers where supported.
+* **Provider Selection:** Choose the appropriate Riverpod provider type based on the state and its lifecycle. Prefer simple providers when possible; don't introduce unnecessary complexity.
+* **Separation:** Keep ephemeral UI state local to the widget when it doesn't need to be shared. Use Riverpod for shared or application-level state.
+* **Architecture:** Keep UI, business logic, and data access separate. Riverpod providers should coordinate application state and dependencies rather than becoming large containers for unrelated logic.
+* **Dependencies:** Prefer explicit dependencies and avoid global mutable state outside Riverpod.
 
-```dart
-// Simple Local State
-final ValueNotifier<int> _counter = ValueNotifier<int>(0);
-ValueListenableBuilder<int>(
-  valueListenable: _counter,
-  builder: (context, value, child) => Text('Count: $value'),
-);
-```
+## Routing
+* **Router:** Use `go_router` for navigation and deep linking across iOS and Web.
+* **Public Web Routes:** The Web client must support unauthenticated access to public functionality, including:
+  - Public party/map discovery.
+  - Joining a party through an invite/deep link.
+  - Viewing and participating in a party's playlist.
+  - Searching tracks and participating in voting where permitted.
+* **Protected Routes:** Require authentication only for functionality that genuinely requires a user account or Spotify authorization, such as creating/hosting parties and managing the user's profile.
+* **Deep Links:** Party invite links must open directly to the corresponding party, both from the Web and from the mobile application.
 
-## Routing (GoRouter)
-Use `go_router` for all navigation needs (deep linking, web). Ensure users are redirected to login when unauthorized.
+## Data Models
+* **Freezed:** Use `freezed` for immutable data models and state objects where generated equality, `copyWith`, or union types are useful.
+* **JSON:** Use `json_serializable` with `json_annotation` for API serialization, integrated with Freezed where appropriate.
+* **Naming:** Use `fieldRename: FieldRename.snake` for JSON field names.
 
-```dart
-final GoRouter _router = GoRouter(
-  routes: <RouteBase>[
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const HomeScreen(),
-      routes: <RouteBase>[
-        GoRoute(
-          path: 'details/:id',
-          builder: (context, state) {
-            final String id = state.pathParameters['id']!;
-            return DetailScreen(id: id);
-          },
-        ),
-      ],
-    ),
-  ],
-);
-MaterialApp.router(routerConfig: _router);
-```
+## Visual Design & Theming
+* **Application:** Use `MaterialApp` as the application root and infrastructure.
+* **Custom Design:** Do not follow the default Material/Google visual style. The application should have its own distinctive visual identity.
+* **Theme:** Define a centralized `ThemeData` with customized colors, typography, shapes, spacing, input decoration, buttons, and other relevant component themes. Prefer global theme configuration over repeatedly styling individual widgets.
+* **Reusable Components:** Create reusable custom components for recurring UI elements such as buttons, inputs, cards, dialogs, and navigation. Reuse existing components rather than creating separate implementations for each screen.
+* **Dark Theme:** The application uses a dark theme only. Do not implement a light theme unless explicitly requested.
+* **Platform Neutrality:** Do not use Cupertino-specific styling or platform-adaptive UI. The visual appearance should remain consistent across iOS and Web.
+* **Consistency:** Follow the established theme and existing component styles when implementing new screens. Do not introduce new visual styles without a reason.
+* **Responsive Design:** Interfaces must adapt appropriately to different screen sizes, particularly between mobile and Web.
+* **Design References:** Screenshots in `design/` are visual references for the intended UI. Inspect relevant references before implementing corresponding screens.
 
-## Data Handling & Serialization
-* **JSON:** Use `json_serializable` and `json_annotation`.
-* **Naming:** Use `fieldRename: FieldRename.snake` for consistency.
+## Layout
+* **Responsive Design:** Build layouts that adapt to different screen sizes, particularly between mobile and Web.
+* **Scrolling:** Use lazy builders such as `ListView.builder` and `GridView.builder` for potentially large collections.
+* **Overflow:** Avoid layouts that can overflow on smaller screens. Prefer responsive layouts over hardcoded dimensions where appropriate.
 
-```dart
-@JsonSerializable(fieldRename: FieldRename.snake)
-class User {
-  final String firstName;
-  final String lastName;
-  User({required this.firstName, required this.lastName});
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-}
-```
-
-## Visual Design & Theming (Material 3)
-* **Visual Design:** Build beautiful and intuitive user interfaces that follow modern design guidelines.
-* **Typography:** Stress and emphasize font sizes to ease understanding, e.g., hero text, section headlines.
-* **Background:** Apply subtle noise texture to the main background to add a premium, tactile feel.
-* **Shadows:** Multi-layered drop shadows create a strong sense of depth; cards have a soft, deep shadow to look "lifted."
-* **Icons:** Incorporate icons to enhance the user’s understanding and the logical navigation of the app.
-* **Interactive Elements:** Buttons, checkboxes, sliders, lists, charts, graphs, and other interactive elements have a shadow with elegant use of color to create a "glow" effect.
-* **Centralized Theme:** Define a centralized `ThemeData` object to ensure a consistent application-wide style.
-* **Light and Dark Themes:** Implement support for both light and dark themes using `theme` and `darkTheme`.
-* **Color Scheme Generation:** Generate harmonious color palettes from a single color using `ColorScheme.fromSeed`.
-
-```dart
-final ThemeData lightTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.deepPurple,
-    brightness: Brightness.light,
-  ),
-  textTheme: GoogleFonts.outfitTextTheme(),
-);
-```
-
-## Layout Best Practices
-* **Expanded:** Use to make a child widget fill the remaining available space along the main axis.
-* **Flexible:** Use when you want a widget to shrink to fit, but not necessarily grow. Don't combine `Flexible` and `Expanded` in the same `Row` or `Column`.
-* **Wrap:** Use when you have a series of widgets that would overflow a `Row` or `Column`, and you want them to move to the next line.
-* **SingleChildScrollView:** Use when your content is intrinsically larger than the viewport, but is a fixed size.
-* **ListView / GridView:** For long lists or grids of content, always use a builder constructor (`.builder`).
-* **FittedBox:** Use to scale or fit a single child widget within its parent.
-* **LayoutBuilder:** Use for complex, responsive layouts to make decisions based on the available space.
-* **Positioned:** Use to precisely place a child within a `Stack` by anchoring it to the edges.
-* **OverlayPortal:** Use to show UI elements (like custom dropdowns or tooltips) "on top" of everything else.
-
-```dart
-// Network Image with Error Handler
-Image.network(
-  'https://example.com/img.png',
-  errorBuilder: (ctx, err, stack) => const Icon(Icons.error),
-  loadingBuilder: (ctx, child, prog) => prog == null ? child : const CircularProgressIndicator(),
-);
-```
-
-## Documentation Philosophy
-* **Comment wisely:** Use comments to explain why the code is written a certain way, not what the code does. The code itself should be self-explanatory.
-* **Document for the user:** Write documentation with the reader in mind. If you had a question and found the answer, add it to the documentation where you first looked.
-* **No useless documentation:** If the documentation only restates the obvious from the code's name, it's not helpful.
-* **Consistency is key:** Use consistent terminology throughout your documentation.
-* **Use `///` for doc comments:** This allows documentation generation tools to pick them up.
-* **Start with a single-sentence summary:** The first sentence should be a concise, user-centric summary ending with a period.
-* **Avoid redundancy:** Don't repeat information that's obvious from the code's context, like the class name or signature.
-* **Public APIs are a priority:** Always document public APIs.
+## Documentation
+* **Comments:** Write comments to explain why something is done, not what the code obviously does.
+* **Doc Comments:** Use `///` for public APIs that require documentation.
+* **Useful Documentation:** Document non-obvious behavior, architectural decisions, and important setup or usage information. Avoid documenting self-explanatory code.
+* **Consistency:** Use consistent terminology throughout the project.
 
 ## Accessibility
 * **Contrast:** Ensure text has a contrast ratio of at least **4.5:1** against its background.
