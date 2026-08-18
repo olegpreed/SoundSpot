@@ -13,6 +13,8 @@ You are an expert full-stack developer and solution architect specializing in cr
 * **Playlist Seeding:** When creating a party, the host either imports an existing playlist from their own Spotify library, imports a playlist found via Spotify's global playlist search, or starts from an empty playlist. Seeding is a one-time copy of track data into our backend at creation time — there is no ongoing sync with the source Spotify playlist afterward.
 * **Host:** The Spotify-authenticated user who creates and owns a party. Only the host's device plays audio, via Spotify Connect/App Remote. The host can end the party explicitly at any time. A party otherwise stays open indefinitely — there is no automatic expiration and no automatic closing on host disconnect.
 * **Guest:** A participant who joins a party to view the shared playlist, add tracks, and vote. Guests never authenticate with Spotify and never receive playback audio themselves — they only observe the host's synced playback state (current track, progress).
+* **Track-Adding Permission:** Each party has a host-controlled switch for whether non-host participants may add tracks. The host can always add tracks regardless of this switch. Voting is always allowed for everyone and is unaffected by this switch.
+* **Single Active Party:** A user (host or participant) may be actively in at most one party at a time on the mobile app. Joining a different party requires leaving or ending the current one first.
 * **Track:** An entry in a party's shared playlist, added individually via Spotify catalog search (by host or guest) or included via playlist seeding at creation. Once added, a track is copied into our own backend as party-owned data — the party playlist is never written back to Spotify as a real Spotify Playlist object, and the host's actual Spotify library/playlists are never modified by the app. Ordered by net vote score (upvotes minus downvotes). (Optional, deferred: letting a host export a finished party's tracks to a real Spotify playlist is a possible later enhancement — do not build it until explicitly requested.)
 * **Vote:** An upvote or downvote cast by a host or guest identity on a track. Each identity may cast at most one vote per track at a time; a vote can be changed or retracted. Vote counts are visible to all participants.
 * **Invite Link / QR Code:** A QR code is simply a scannable encoding of the same deep-link URL used for link-based invites. There is no separate QR-specific join token or backend logic.
@@ -31,6 +33,7 @@ You are an expert full-stack developer and solution architect specializing in cr
 ## Location & Discovery
 * **Party Location:** A party's map location is a pin chosen by the host at creation time, using exact real-world coordinates (not fuzzed), since guests need to physically find the gathering. The host can adjust the pin after creation; the pin does not otherwise follow the host's live position.
 * **Discovery:** Public parties are discoverable on the map using their pinned location. Private parties are never shown on the public map and are reachable only via invite link/QR code.
+* **Proximity-Gated Joining:** Joining a public party requires the joiner (mobile app user or web guest) to be within that party's join radius of its pin, checked via the joiner's current device/browser location. The join radius is set by the host at party creation (bounded 50m–500m, default 150m) rather than a fixed app-wide constant. Joining a private party via invite link/QR is exempt from this check — possessing the invite is the gate.
 * **Location Access:** Use a dedicated geolocation package (e.g. `geolocator`) for obtaining device location, isolated behind a repository/service consistent with the rest of the app's data-layer conventions.
 
 ## Backend Communication
@@ -124,6 +127,7 @@ You are an expert full-stack developer and solution architect specializing in cr
 * **Protected Routes:** Require authentication only for functionality that genuinely requires a user account or Spotify authorization, such as creating/hosting parties, following other hosts, and managing the user's profile.
 * **Deep Links:** Party invite links must open directly to the corresponding party, both from the Web and from the mobile application.
 * **Guest Scope:** Unauthenticated participation applies to the Web client only — see Guest Identity. The mobile app always requires Spotify authentication, even to join as a non-host participant.
+* **Screen Inventory:** See [NAVIGATION.md](NAVIGATION.md) for the concrete screen list and navigation flow. Consult it before implementing or restructuring any screen so new work fits the planned flow rather than diverging from it.
 
 ## Data Models
 * **Freezed:** Use `freezed` for immutable data models and state objects where generated equality, `copyWith`, or union types are useful.

@@ -11,6 +11,7 @@ description: Implement a new or substantially changed feature following the proj
    - Read the relevant existing feature code before making changes.
    - Identify the required user behavior, data flow, dependencies, and affected layers.
    - Check existing tests and related implementations for established patterns.
+   - For any screen or navigation change, check [NAVIGATION.md](../../../NAVIGATION.md) for the planned screen inventory and flow before adding, removing, or rewiring a route.
 
 2. **Plan the Changes**
    - Determine which feature and layers need to change.
