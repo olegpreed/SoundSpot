@@ -125,7 +125,7 @@ You are an expert full-stack developer and solution architect specializing in cr
   - Viewing and participating in a party's playlist.
   - Searching tracks and participating in voting where permitted.
 * **Protected Routes:** Require authentication only for functionality that genuinely requires a user account or Spotify authorization, such as creating/hosting parties, following other hosts, and managing the user's profile.
-* **Deep Links:** Party invite links must open directly to the corresponding party, both from the Web and from the mobile application.
+* **Deep Links:** A private party's invite link opens directly to that party's Party Preview/Active view, both from the Web and from the mobile application. A public party's invite link instead opens the Map view centered on that party's pin — public parties are surfaced via the map rather than a direct preview, so the recipient sees the pin and taps into it, proceeding to Party Preview as normal from there.
 * **Guest Scope:** Unauthenticated participation applies to the Web client only — see Guest Identity. The mobile app always requires Spotify authentication, even to join as a non-host participant.
 * **Screen Inventory:** See [NAVIGATION.md](NAVIGATION.md) for the concrete screen list and navigation flow. Consult it before implementing or restructuring any screen so new work fits the planned flow rather than diverging from it.
 
@@ -138,6 +138,7 @@ You are an expert full-stack developer and solution architect specializing in cr
 * **Application:** Use `MaterialApp` as the application root and infrastructure.
 * **Custom Design:** Do not follow the default Material/Google visual style. The application should have its own distinctive visual identity.
 * **Theme:** Define a centralized `ThemeData` with customized colors, typography, shapes, spacing, input decoration, buttons, and other relevant component themes. Prefer global theme configuration over repeatedly styling individual widgets.
+* **Highlight/Seed Color:** The design's green highlight/accent color is a single configurable seed value defined once in the theme, not hardcoded per-widget. Derive tonal shades and opacity variants of it from that seed (e.g. via `ColorScheme.fromSeed` or an equivalent seed-based palette utility) rather than defining separate hardcoded greens across the app.
 * **Reusable Components:** Create reusable custom components for recurring UI elements such as buttons, inputs, cards, dialogs, and navigation. Reuse existing components rather than creating separate implementations for each screen.
 * **Dark Theme:** The application uses a dark theme only. Do not implement a light theme unless explicitly requested.
 * **Platform Neutrality:** Do not use Cupertino-specific styling or platform-adaptive UI. The visual appearance should remain consistent across iOS and Web.

@@ -42,7 +42,7 @@ Spotify OAuth (PKCE). Creates a backend user on first login if one doesn't alrea
 Completing the wizard creates the party and lands on Party (Active) as host.
 
 ### 4. Party Preview
-Read-only view of a party's current track list, reached by tapping a map pin (public) or opening an invite link (private, mobile deep link). Applies equally to public and private parties — private parties skip only the proximity check, not the Preview/Join step itself.
+Read-only view of a party's current track list, reached by tapping a map pin or opening a private party's invite link (mobile deep link). A public party's invite link opens the Map tab centered on that party's pin instead of Party Preview directly — see Deep Links in CLAUDE.md; from there, tapping the pin reaches Party Preview as usual. Once reached, Preview/Join behaves the same for public and private parties — private parties skip only the proximity check, not the Preview/Join step itself.
 - **Join** action:
   - Public party: proximity-checked against the party's pin, using that party's configured join radius; blocked with a distance message if too far.
   - Private party: no proximity check — possessing the invite link/QR is the gate.
@@ -54,7 +54,7 @@ Shared for host and non-host participants, with role-specific controls:
 - Track list ordered by net vote score; vote (upvote/downvote, changeable/retractable) available to everyone.
 - Add-track button → Track Search (hidden for non-host participants if the party's track-adding toggle is off; always visible to the host).
 - Participant count.
-- Host-only: playback controls (play/pause/next — commands `spotify_sdk` App Remote directly on the host's device), Invite button (shows QR + copyable link — the QR is just a rendered encoding of the link, opened by the device's own camera app; no in-app scanner needed), Settings icon → Party Settings, End Party action.
+- Host-only: playback controls (play/pause/next — commands `spotify_sdk` App Remote directly on the host's device), Invite button (opens a share sheet offering three options: native OS share, copy link to clipboard, or show QR code — the QR is just a rendered encoding of the link, opened by the device's own camera app; no in-app scanner needed), Settings icon → Party Settings, End Party action.
 - Non-host-only: Leave Party action.
 - Everyone: synced playback state display (current track, progress) — read-only, sourced from the host's device over the realtime channel.
 
@@ -80,9 +80,11 @@ Simple list, reached from either profile screen's follower/following counts. Tap
 Unauthenticated, no navbar/sign-in — reached via direct link or by browsing from Map.
 
 ### Map
-Same pin data and interaction as the mobile Map tab (public parties only). Tap a pin → Party Preview.
+Same pin data and interaction as the mobile Map tab (public parties only). Tap a pin → Party Preview. A public party's invite link opens here too, centered on that party's pin, rather than opening Party Preview directly — see Deep Links in CLAUDE.md.
 
 ### Party Preview / Party (Active)
 Same states as mobile's Party Preview → Party (Active), with two differences:
 - No host-only controls ever appear (a web session is never a host).
 - First **Join** action (vote or add-track attempt) prompts for a guest display name (device UUID generated silently; see Guest Identity), stored for the session/device so it isn't asked again. Browsing the Preview beforehand requires no identity.
+
+A private party's invite link opens directly here, skipping Map.
