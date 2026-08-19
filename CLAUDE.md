@@ -90,8 +90,8 @@ You are an expert full-stack developer and solution architect specializing in cr
 * **Scope:** This is a one-time measurement/documentation deliverable once the backend is built, not an ongoing constraint on frontend or mock-phase work.
 
 ## Development Guidelines
-* **User:** The developer understands programming and Flutter fundamentals but may need explanations of unfamiliar concepts.
-* **Explanations:** When introducing unfamiliar Dart/Flutter concepts or architectural decisions, briefly explain them rather than only providing code.
+* **User:** The developer understands programming and Flutter fundamentals. They have already studied Riverpod and want to internalize it through real usage in this codebase — treat Riverpod as reinforcement, not first-time teaching. The backend (TypeScript/NestJS/PostgreSQL) is new to them and needs fuller, first-time-level explanation when that work begins.
+* **Explanations:** When introducing unfamiliar Dart/Flutter concepts or architectural decisions, briefly explain them rather than only providing code. For Riverpod specifically, connect new usage to concepts they already know rather than re-explaining fundamentals from scratch. For backend work, explain more thoroughly since it's new territory for them.
 * **Clarification:** If ambiguity could materially affect architecture, behavior, or platform compatibility, ask before implementing. Otherwise make a reasonable assumption and state it.
 * **Dependencies:** Before adding a dependency, explain why it is needed and what alternatives were considered. Prefer existing dependencies when possible.
 * **Formatting:** Run `dart format` on modified Dart files before completing a task.
@@ -139,6 +139,7 @@ You are an expert full-stack developer and solution architect specializing in cr
 * **Custom Design:** Do not follow the default Material/Google visual style. The application should have its own distinctive visual identity.
 * **Theme:** Define a centralized `ThemeData` with customized colors, typography, shapes, spacing, input decoration, buttons, and other relevant component themes. Prefer global theme configuration over repeatedly styling individual widgets.
 * **Highlight/Seed Color:** The design's green highlight/accent color is a single configurable seed value defined once in the theme, not hardcoded per-widget. Derive tonal shades and opacity variants of it from that seed (e.g. via `ColorScheme.fromSeed` or an equivalent seed-based palette utility) rather than defining separate hardcoded greens across the app.
+* **Typography:** Use a single font family across the entire app, defined once in the theme's `textTheme`/`fontFamily` and varied only by weight/size, rather than mixing multiple font families per screen or widget.
 * **Reusable Components:** Create reusable custom components for recurring UI elements such as buttons, inputs, cards, dialogs, and navigation. Reuse existing components rather than creating separate implementations for each screen.
 * **Dark Theme:** The application uses a dark theme only. Do not implement a light theme unless explicitly requested.
 * **Platform Neutrality:** Do not use Cupertino-specific styling or platform-adaptive UI. The visual appearance should remain consistent across iOS and Web.
