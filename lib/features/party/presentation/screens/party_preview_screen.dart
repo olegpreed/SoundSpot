@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../../core/router/app_routes.dart';
-import '../../../../core/widgets/party_preview_bottom_bar.dart';
-
+/// The bottom bar for this screen is owned by AppShell (see app_shell.dart),
+/// not this widget — it's part of the persistent chrome shared with Party
+/// (Active) and Main, not this screen's own Scaffold.
 class PartyPreviewScreen extends StatelessWidget {
   const PartyPreviewScreen({super.key, required this.partyId});
 
@@ -11,18 +10,12 @@ class PartyPreviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canGoBack = context.canPop();
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text('Party Preview ($partyId)'),
       ),
       body: const Center(child: Text('Read-only track list (stub)')),
-      bottomNavigationBar: PartyPreviewBottomBar(
-        onBack: canGoBack ? () => context.pop() : null,
-        onJoin: () => context.go(AppRoutes.partyActivePath(partyId)),
-      ),
     );
   }
 }

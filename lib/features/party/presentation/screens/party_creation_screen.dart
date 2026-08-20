@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_routes.dart';
+import '../../application/active_party_provider.dart';
 
 /// Stub for the 3-step creation wizard (name → visibility/pin/toggle →
 /// playlist seeding). Steps aren't split out yet — this placeholder just
 /// completes the flow so the rest of the navigation graph is walkable.
-class PartyCreationScreen extends StatelessWidget {
+class PartyCreationScreen extends ConsumerWidget {
   const PartyCreationScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(title: const Text('Create Party')),
       body: Center(
@@ -25,8 +27,10 @@ class PartyCreationScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               FilledButton(
-                onPressed: () =>
-                    context.go(AppRoutes.partyActivePath('demo-party')),
+                onPressed: () {
+                  ref.read(activePartyProvider.notifier).set('demo-party');
+                  context.go(AppRoutes.partyActivePath('demo-party'));
+                },
                 child: const Text('Finish (stub) → Party Active'),
               ),
             ],
