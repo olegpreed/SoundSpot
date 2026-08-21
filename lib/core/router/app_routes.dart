@@ -13,7 +13,6 @@ class AppRoutes {
   static const partyPreview = '/party/preview/:partyId';
   static const partyActive = '/party/active/:partyId';
   static const partySettings = '/party/active/:partyId/settings';
-  static const trackSearch = '/party/active/:partyId/track-search';
 
   static const hostSearch = '/profile/search';
   static const otherUserProfile = '/profile/:userId';
@@ -25,9 +24,6 @@ class AppRoutes {
 
   static String partySettingsPath(String partyId) =>
       '/party/active/$partyId/settings';
-
-  static String trackSearchPath(String partyId) =>
-      '/party/active/$partyId/track-search';
 
   static String otherUserProfilePath(String userId) => '/profile/$userId';
 

@@ -62,14 +62,14 @@ Bottom chrome: Back + Join only (see Bottom Chrome above). Read-only view of a p
 ### 5. Party (Active)
 Bottom chrome: transport bar, replacing the main tab bar (see Bottom Chrome above). Shared for host and non-host participants, with role-specific controls:
 - Track list ordered by net vote score; vote (upvote/downvote, changeable/retractable) available to everyone.
-- Add-track button → Track Search (hidden for non-host participants if the party's track-adding toggle is off; always visible to the host).
+- Add-track button → Add Track sheet (hidden for non-host participants if the party's track-adding toggle is off; always visible to the host).
 - Participant count.
 - Host-only: playback controls (play/pause/next — commands `spotify_sdk` App Remote directly on the host's device), Invite button (opens a share sheet offering three options: native OS share, copy link to clipboard, or show QR code — the QR is just a rendered encoding of the link, opened by the device's own camera app; no in-app scanner needed), Settings icon → Party Settings, End Party action.
 - Non-host-only: Leave Party action.
 - Everyone: synced playback state display (current track, progress) — read-only, sourced from the host's device over the realtime channel.
 
-### 6. Track Search
-Search Spotify's catalog (via the app-level Client Credentials token) and add a result to the party's track list. Reached from Party (Active)'s add-track button; used by host and non-host participants alike (subject to the track-adding toggle).
+### 6. Add Track (modal bottom sheet)
+Search Spotify's catalog (via the app-level Client Credentials token) and add a result to the party's track list. Presented as a modal bottom sheet over Party (Active) rather than its own screen/route — search results aren't deep-linkable state. Reached from Party (Active)'s add-track button; used by host and non-host participants alike (subject to the track-adding toggle).
 
 ### 7. Party Settings (host only)
 Reached from Party (Active). Edit the pin location (public parties only), toggle track-adding permission, end the party.

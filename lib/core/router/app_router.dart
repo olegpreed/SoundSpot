@@ -10,7 +10,6 @@ import '../../features/party/presentation/screens/party_creation_screen.dart';
 import '../../features/party/presentation/screens/party_preview_screen.dart';
 import '../../features/party/presentation/screens/party_settings_screen.dart';
 import '../../features/party/presentation/screens/party_tab_screen.dart';
-import '../../features/party/presentation/screens/track_search_screen.dart';
 import '../../features/profile/presentation/screens/follower_following_list_screen.dart';
 import '../../features/profile/presentation/screens/host_search_screen.dart';
 import '../../features/profile/presentation/screens/other_user_profile_screen.dart';
@@ -27,9 +26,11 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 /// Map / Party / Profile / Party Preview / Party (Active) share one
 /// persistent AppShell (see app_shell.dart) so the bottom bar stays mounted
 /// and only cross-fades its content between those contexts, instead of
-/// re-transitioning along with the page. Track Search and Party Settings use
+/// re-transitioning along with the page. Party Settings uses
 /// [GoRoute.parentNavigatorKey] to escape that shell and cover the full
-/// screen with no bar — see NAVIGATION.md's Bottom Chrome section. Every
+/// screen with no bar — see NAVIGATION.md's Bottom Chrome section. Add Track
+/// is a modal bottom sheet triggered directly from the transport bar (see
+/// AppShell) rather than a route at all. Every
 /// other route (Sign In, Party Creation, Host Search, profiles) is a plain
 /// top-level route outside the shell, so it never shows the bar either.
 ///
@@ -37,8 +38,8 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 /// [StatefulShellRoute] inside the outer shell: switching between them uses
 /// its IndexedStack, which preserves each tab's own state (e.g. Map's
 /// camera position) and swaps instantly with no page transition, unlike
-/// pushing into Preview/Active/Track Search/Settings, which still gets
-/// go_router's normal transition — "slide only when going deep."
+/// pushing into Preview/Active/Settings, which still gets go_router's normal
+/// transition — "slide only when going deep."
 ///
 /// The Party tab's own route redirects straight to Party (Active) whenever
 /// [activePartyProvider] is set — the tab itself only ever renders the
@@ -109,12 +110,6 @@ final appRouter = GoRouter(
               builder: (context, state) => PartySettingsScreen(
                 partyId: state.pathParameters['partyId']!,
               ),
-            ),
-            GoRoute(
-              path: 'track-search',
-              parentNavigatorKey: _rootNavigatorKey,
-              builder: (context, state) =>
-                  TrackSearchScreen(partyId: state.pathParameters['partyId']!),
             ),
           ],
         ),
