@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// Presented via [showModalBottomSheet] from the Party (Active) transport bar
-/// (see AppShell), not as its own go_router route. A track search has no
-/// state worth a URL/deep link, so a plain modal sheet — dims the party view
-/// behind it, swipe-down or tap-outside to dismiss — fits better than a full
-/// page.
+/// Presented via [showModalBottomSheet] from the Party (Active) transport
+/// bar, not as its own go_router route — a track search has no state worth
+/// a URL.
 class AddTrackSheet extends StatelessWidget {
   const AddTrackSheet({super.key, required this.partyId});
 

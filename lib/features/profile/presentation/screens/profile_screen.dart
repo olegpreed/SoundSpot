@@ -16,13 +16,8 @@ class ProfileScreen extends StatelessWidget {
           IconButton(
             onPressed: () => showModalBottomSheet(
               context: context,
-              // Profile lives inside the Profile tab's own nested Navigator
-              // (StatefulShellRoute preserves each tab's state that way).
-              // That Navigator's Overlay is bounded above AppShell's
-              // persistent bottomNavigationBar, so a sheet pushed onto it
-              // would stop short of the bar instead of covering it. Pushing
-              // onto the root Navigator instead lets the sheet overlay the
-              // whole screen, bar included.
+              // Profile's tab Navigator doesn't reach past the bottom bar;
+              // use the root Navigator so the sheet covers it too.
               useRootNavigator: true,
               isScrollControlled: true,
               useSafeArea: true,

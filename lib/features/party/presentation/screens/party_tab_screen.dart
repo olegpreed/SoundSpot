@@ -5,10 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../application/active_party_provider.dart';
 
-/// The Party tab only ever renders the "no active party" empty state — when
-/// [activePartyProvider] is set, the route itself redirects straight to
-/// Party (Active) before this ever builds (see app_router.dart), so there's
-/// no "you have a party, tap to open it" middleman screen here.
+/// Only ever renders the "no active party" empty state — the route itself
+/// redirects to Party (Active) before this builds when a party is active
+/// (see app_router.dart).
 class PartyTabScreen extends ConsumerWidget {
   const PartyTabScreen({super.key});
 

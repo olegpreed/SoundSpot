@@ -6,8 +6,7 @@ import '../../../../core/router/app_routes.dart';
 import '../../application/active_party_provider.dart';
 
 /// Stub for the 3-step creation wizard (name → visibility/pin/toggle →
-/// playlist seeding). Steps aren't split out yet — this placeholder just
-/// completes the flow so the rest of the navigation graph is walkable.
+/// playlist seeding) — steps aren't split out yet.
 class PartyCreationScreen extends ConsumerWidget {
   const PartyCreationScreen({super.key});
 

@@ -18,33 +18,16 @@ import 'app_shell.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
-/// Route stubs for every screen in NAVIGATION.md so the full flow is
-/// walkable end to end. Screen bodies are placeholders — only the graph and
-/// bottom-chrome wiring are meant to be reviewed at this stage.
+/// See NAVIGATION.md for the full screen inventory and flow.
 ///
-/// Map / Party / Profile / Party Preview / Party (Active) share one
-/// persistent AppShell (see app_shell.dart) so the bottom bar stays mounted
-/// and only cross-fades its content between those contexts, instead of
-/// re-transitioning along with the page. Party Settings uses
-/// [GoRoute.parentNavigatorKey] to escape that shell and cover the full
-/// screen with no bar — see NAVIGATION.md's Bottom Chrome section. Add Track
-/// and Host Search are both modal bottom sheets triggered directly from
-/// their respective screens (see AppShell and profile_screen.dart) rather
-/// than routes at all. Every other route (Sign In, Party Creation, profiles)
-/// is a plain top-level route outside the shell, so it never shows the bar
-/// either.
-///
-/// Map/Party/Profile are additionally nested in their own
-/// [StatefulShellRoute] inside the outer shell: switching between them uses
-/// its IndexedStack, which preserves each tab's own state (e.g. Map's
-/// camera position) and swaps instantly with no page transition, unlike
-/// pushing into Preview/Active/Settings, which still gets go_router's normal
-/// transition — "slide only when going deep."
+/// Map/Party/Profile are nested in a [StatefulShellRoute]: switching between
+/// them uses its IndexedStack, which preserves each tab's state and swaps
+/// instantly with no page transition — unlike pushing into
+/// Preview/Active/Settings, which still gets go_router's normal transition.
 ///
 /// The Party tab's own route redirects straight to Party (Active) whenever
-/// [activePartyProvider] is set — the tab itself only ever renders the
-/// "create a party" empty state; there's no intermediate "you have a party,
-/// tap to open it" screen.
+/// [activePartyProvider] is set, so there's no intermediate "tap to open
+/// your party" screen.
 final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: AppRoutes.signIn,

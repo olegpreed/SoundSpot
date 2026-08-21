@@ -4,8 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_routes.dart';
 
 /// Presented via [showModalBottomSheet] from Profile's search action, not as
-/// its own go_router route — same treatment as Add Track (see
-/// add_track_sheet.dart): a host search has no state worth a URL/deep link.
+/// its own go_router route — same treatment as Add Track.
 class HostSearchSheet extends StatelessWidget {
   const HostSearchSheet({super.key});
 

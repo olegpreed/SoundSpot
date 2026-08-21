@@ -154,6 +154,7 @@ You are an expert full-stack developer and solution architect specializing in cr
 
 ## Documentation
 * **Comments:** Write comments to explain why something is done, not what the code obviously does.
+* **Default to none:** Start from zero comments. Add one only if a reader would genuinely be confused or misled without it. Having spent effort figuring something out is not, by itself, a reason to leave a comment about it — only lasting surprise value is.
 * **Doc Comments:** Use `///` for public APIs that require documentation.
 * **Useful Documentation:** Document non-obvious behavior, architectural decisions, and important setup or usage information. Avoid documenting self-explanatory code.
 * **Consistency:** Use consistent terminology throughout the project.

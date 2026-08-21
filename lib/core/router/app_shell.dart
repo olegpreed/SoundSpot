@@ -11,19 +11,12 @@ import 'app_routes.dart';
 
 enum _BarVariant { mainTabs, partyPreview, partyActive }
 
-/// Persistent outer chrome shared by Main (Map/Party/Profile), Party Preview
-/// and Party (Active) — see app_router.dart. This widget stays mounted
-/// across all three; only the bottom bar's content cross-fades between
-/// variants (see NAVIGATION.md's Bottom Chrome section) while page content
-/// still gets go_router's normal push/pop transition underneath it. Party
-/// Settings intentionally escapes this shell entirely (parentNavigatorKey in
-/// app_router.dart) to overlay full-screen with no bar at all, rather than
-/// cross-fading to an empty state. Add Track is a modal bottom sheet shown
-/// directly over this shell instead — see onAddTrack below.
+/// Persistent bottom chrome shared by Map/Party/Profile, Party Preview, and
+/// Party (Active) — stays mounted across all three; only the bar's content
+/// cross-fades between variants (see NAVIGATION.md's Bottom Chrome section).
 ///
 /// isHost/isPlaying/canAddTrack are hardcoded stub values until the party
-/// repository and realtime playback stream exist — [activePartyProvider]
-/// only tracks *which* party is active, not host role or playback state.
+/// repository and realtime playback stream exist.
 class AppShell extends ConsumerWidget {
   const AppShell({super.key, required this.state, required this.child});
 

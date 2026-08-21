@@ -3,13 +3,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_routes.dart';
 
-/// Stub: public party pins go here once map/location work begins. Tapping a
-/// pin navigates to Party Preview with that party's id. `extra: true` tells
-/// AppShell's bottom bar there's a real screen to pop back to (see
-/// app_shell.dart) — go_router's own canPop tracking doesn't reliably
-/// reflect this once a push crosses from a nested StatefulShellRoute branch
-/// into a sibling route outside it, so back-availability is signaled
-/// explicitly at each call site instead of inferred from router internals.
+/// Stub: public party pins go here once map/location work begins. `extra:
+/// true` tells AppShell's bottom bar there's a screen to pop back to —
+/// go_router's canPop doesn't reliably reflect that across a
+/// StatefulShellRoute branch boundary, so it's signaled explicitly instead.
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
 
