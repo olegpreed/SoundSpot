@@ -14,7 +14,6 @@ class AppRoutes {
   static const partyActive = '/party/active/:partyId';
   static const partySettings = '/party/active/:partyId/settings';
 
-  static const hostSearch = '/profile/search';
   static const otherUserProfile = '/profile/:userId';
   static const connections = '/profile/:userId/connections';
 

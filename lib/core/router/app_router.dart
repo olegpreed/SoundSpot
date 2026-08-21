@@ -11,7 +11,6 @@ import '../../features/party/presentation/screens/party_preview_screen.dart';
 import '../../features/party/presentation/screens/party_settings_screen.dart';
 import '../../features/party/presentation/screens/party_tab_screen.dart';
 import '../../features/profile/presentation/screens/follower_following_list_screen.dart';
-import '../../features/profile/presentation/screens/host_search_screen.dart';
 import '../../features/profile/presentation/screens/other_user_profile_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import 'app_routes.dart';
@@ -29,10 +28,11 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 /// re-transitioning along with the page. Party Settings uses
 /// [GoRoute.parentNavigatorKey] to escape that shell and cover the full
 /// screen with no bar — see NAVIGATION.md's Bottom Chrome section. Add Track
-/// is a modal bottom sheet triggered directly from the transport bar (see
-/// AppShell) rather than a route at all. Every
-/// other route (Sign In, Party Creation, Host Search, profiles) is a plain
-/// top-level route outside the shell, so it never shows the bar either.
+/// and Host Search are both modal bottom sheets triggered directly from
+/// their respective screens (see AppShell and profile_screen.dart) rather
+/// than routes at all. Every other route (Sign In, Party Creation, profiles)
+/// is a plain top-level route outside the shell, so it never shows the bar
+/// either.
 ///
 /// Map/Party/Profile are additionally nested in their own
 /// [StatefulShellRoute] inside the outer shell: switching between them uses
@@ -118,10 +118,6 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.partyCreate,
       builder: (context, state) => const PartyCreationScreen(),
-    ),
-    GoRoute(
-      path: AppRoutes.hostSearch,
-      builder: (context, state) => const HostSearchScreen(),
     ),
     GoRoute(
       path: AppRoutes.otherUserProfile,

@@ -93,6 +93,7 @@ class AppShell extends ConsumerWidget {
           onPlayPause: () {},
           onAddTrack: () => showModalBottomSheet(
             context: context,
+            useRootNavigator: true,
             isScrollControlled: true,
             useSafeArea: true,
             builder: (context) => AddTrackSheet(partyId: partyId),

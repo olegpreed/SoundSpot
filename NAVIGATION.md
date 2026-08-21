@@ -39,7 +39,7 @@ Spotify OAuth (PKCE). Creates a backend user on first login if one doesn't alrea
 - Spotify avatar, username, top artists.
 - Current party, if active (links to Party tab).
 - Followers count / Following count → Follower/Following List.
-- Search entry point → Host Search.
+- Search entry point → Host Search sheet.
 - Edit action (own profile only).
 
 ### 3. Party Creation (wizard, 3 steps)
@@ -74,8 +74,8 @@ Search Spotify's catalog (via the app-level Client Credentials token) and add a 
 ### 7. Party Settings (host only)
 Reached from Party (Active). Edit the pin location (public parties only), toggle track-adding permission, end the party.
 
-### 8. Host Search
-Search other Spotify-authenticated users by display name. Reached from Profile tab. Clicking on one of the results open Other User Profile.
+### 8. Host Search (modal bottom sheet)
+Search other Spotify-authenticated users by display name. Presented as a modal bottom sheet over Profile, same treatment as Add Track — no state worth a URL/deep link. Reached from Profile tab's search action. Clicking on one of the results closes the sheet and opens Other User Profile.
 
 ### 9. Other User Profile
 Same layout as own Profile (avatar, username, top artists, current party if active, followers/following) but read-only, with a Follow/Unfollow button instead of an edit action.
